@@ -13,11 +13,8 @@
 #import "MNCalendarHeaderView.h"
 #import "MNFastDateEnumeration.h"
 #import "NSDate+MNAdditions.h"
-#import "NSDateComponents+MNAdditions.h"
 
 @interface MNCalendarView() <UICollectionViewDataSource, UICollectionViewDelegate>
-
-@property(nonatomic,strong,readwrite) NSCalendar *calendar;
 
 @property(nonatomic,strong,readwrite) UICollectionView *collectionView;
 @property(nonatomic,strong,readwrite) UICollectionViewFlowLayout *layout;
@@ -40,10 +37,10 @@
 
 @implementation MNCalendarView
 
-- (void)commonInitWithCalendar:(NSCalendar *)calendar {
-  self.calendar   = (calendar ?: NSCalendar.currentCalendar);
+- (void)commonInit {
+  self.calendar   = NSCalendar.currentCalendar;
   self.fromDate   = [NSDate.date mn_beginningOfDay:self.calendar];
-  self.toDate     = [self.fromDate mn_dateByAdding:4 unit:NSCalendarUnitYear calendar:self.calendar];
+  self.toDate     = [self.fromDate dateByAddingTimeInterval:MN_YEAR * 4];
   self.daysInWeek = 7;
   
   self.headerViewClass  = MNCalendarHeaderView.class;
@@ -57,21 +54,17 @@
   [self reloadData];
 }
 
-- (instancetype)initWithFrame:(CGRect)frame calendar:(NSCalendar *)calendar {
+- (id)initWithFrame:(CGRect)frame {
   if (self = [super initWithFrame:frame]) {
-    [self commonInitWithCalendar:calendar];
+    [self commonInit];
   }
   return self;
-}
-
-- (id)initWithFrame:(CGRect)frame {
-  return [self initWithFrame:frame calendar:nil];
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
   self = [super initWithCoder: aDecoder];
   if ( self ) {
-    [self commonInitWithCalendar:nil];
+    [self commonInit];
   }
   
   return self;
@@ -108,11 +101,6 @@
   [self.monthFormatter setDateFormat:@"MMMM yyyy"];
 }
 
-- (void)setLocale:(NSLocale *)locale {
-    _locale = locale;
-    self.monthFormatter.locale = locale;
-}
-
 - (void)setSelectedDate:(NSDate *)selectedDate {
   _selectedDate = [selectedDate mn_beginningOfDay:self.calendar];
 }
@@ -131,7 +119,6 @@
   
   NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
   formatter.calendar = self.calendar;
-  formatter.locale = self.locale ?: formatter.locale;
   
   self.weekdaySymbols = formatter.shortWeekdaySymbols;
   
@@ -152,34 +139,25 @@
 
 - (NSDate *)firstVisibleDateOfMonth:(NSDate *)date {
   date = [date mn_firstDateOfMonth:self.calendar];
-  //date = self.fromDate;
   
   NSDateComponents *components =
     [self.calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekdayCalendarUnit
-                     fromDate:date];
+                fromDate:date];
   
-  NSInteger offsetDays = 0 - components.weekday + self.calendar.firstWeekday;
-  if (offsetDays > 0)
-    offsetDays -= self.daysInWeek;
-  
-  return [self.calendar dateByAddingComponents:[NSDateComponents mn_dateComponentsWithConstant:offsetDays unit:NSCalendarUnitDay]
-                                        toDate:date
-                                       options:0];
+  return
+    [[date mn_dateWithDay:-((components.weekday - 1) % self.daysInWeek) calendar:self.calendar] dateByAddingTimeInterval:MN_DAY];
 }
 
 - (NSDate *)lastVisibleDateOfMonth:(NSDate *)date {
   date = [date mn_lastDateOfMonth:self.calendar];
-  //date = self.toDate;
   
   NSDateComponents *components =
     [self.calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekdayCalendarUnit
                      fromDate:date];
   
-  NSInteger offsetDays = (self.calendar.firstWeekday - components.weekday - 1 + self.daysInWeek) % self.daysInWeek;
-  return [self.calendar dateByAddingComponents:[NSDateComponents mn_dateComponentsWithConstant:offsetDays
-                                                                                          unit:NSCalendarUnitDay]
-                                        toDate:date
-                                       options:0];
+  return
+    [date mn_dateWithDay:components.day + (self.daysInWeek - 1) - ((components.weekday - 1) % self.daysInWeek)
+                calendar:self.calendar];
 }
 
 - (void)applyConstraints {
@@ -260,7 +238,7 @@
                                                 forIndexPath:indexPath];
     
     cell.backgroundColor = self.collectionView.backgroundColor;
-    cell.titleLabel.text = self.weekdaySymbols[(indexPath.item + self.calendar.firstWeekday - 1) % self.daysInWeek];
+    cell.titleLabel.text = self.weekdaySymbols[indexPath.item];
     cell.separatorColor = self.separatorColor;
     return cell;
   }
@@ -290,20 +268,6 @@
 
   if (self.selectedDate && cell.enabled) {
     [cell setSelected:[date isEqualToDate:self.selectedDate]];
-  }
-  
-  if ([self.delegate respondsToSelector:@selector(calendarView:shouldCustomCellWithDate:)]) {
-    if ([self.delegate calendarView:self shouldCustomCellWithDate:date]) {
-      if ([self.delegate respondsToSelector:@selector(calendarView:customBackgroundWithDate:)]) {
-        cell.backgroundColor = [self.delegate calendarView:self customBackgroundWithDate:date];
-      }
-      if ([self.delegate respondsToSelector:@selector(calendarView:customBottomTextWithDate:)]) {
-        cell.titleLabel.text = [NSString stringWithFormat:@"%@\n%@", cell.titleLabel.text, [self.delegate calendarView:self customBottomTextWithDate:date]];
-      }
-      if ([self.delegate respondsToSelector:@selector(calendarView:customTextColorWithDate:)]) {
-        cell.titleLabel.textColor = [self.delegate calendarView:self customTextColorWithDate:date];
-      }
-    }
   }
   
   return cell;
