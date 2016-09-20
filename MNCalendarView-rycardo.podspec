@@ -1,5 +1,5 @@
 Pod::Spec.new do |s|
-  s.name         = "MNCalendarView@aceontech"
+  s.name         = "MNCalendarView-rycardo"
   s.version      = "1.0.0"
   s.summary      = "4XQ forked version of MN Calendar View for iOS apps."
   s.homepage     = "https://github.com/rycardo/MNCalendarView-rycardo"
