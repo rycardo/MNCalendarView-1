@@ -34,8 +34,13 @@
 @property(nonatomic,strong) Class dayCellClass;
 
 - (void)reloadData;
-- (void)registerUICollectionViewClasses; 
 
+- (void)registerUICollectionViewClasses;
+/*
+ *  This method added by Rycardo Cousteau on 6 January 2015, based on this github thread:
+ *  github.com/min/MNCalendarView/issues/10
+ */
+- (void)scrollToDate:(NSDate*)date animated:(BOOL)animated;
 @end
 
 @protocol MNCalendarViewDelegate <NSObject>
