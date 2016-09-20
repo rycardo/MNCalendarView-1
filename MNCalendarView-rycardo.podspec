@@ -8,6 +8,6 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/rycardo/MNCalendarView-rycardo.git", :branch => "master", :tag => "v#{s.version}" }
   s.platform     = :ios, '9.3.3'
   s.frameworks   = 'UIKit', 'CoreGraphics'
-  s.source_files = 'MNCalendarView', 'MNCalendarView/**/*.{h,m}'
+  s.source_files = 'MNCalendarView', 'MNCalendarView/*.{h,m,pch}'
   s.requires_arc = true
 end
