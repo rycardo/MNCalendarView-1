@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 min. All rights reserved.
 //
 
-#import "NSDate+MNAdditions.h"
-
 @implementation NSDate (MNAdditions)
 
 - (instancetype)mn_firstDateOfMonth:(NSCalendar *)calendar {
@@ -15,7 +13,7 @@
     calendar = [NSCalendar currentCalendar];
   }
   
-  NSDateComponents *components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:self];
+  NSDateComponents *components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:self];
   
   [components setDay:1];
   
@@ -27,7 +25,7 @@
     calendar = [NSCalendar currentCalendar];
   }
   
-  NSDateComponents *components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:self];
+  NSDateComponents *components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:self];
   [components setDay:0];
   [components setMonth:components.month + 1];
   
@@ -38,7 +36,7 @@
   if (nil == calendar) {
     calendar = [NSCalendar currentCalendar];
   }
-  NSDateComponents *components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:self];
+  NSDateComponents *components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:self];
   [components setHour:0];
   
   return [calendar dateFromComponents:components];
@@ -48,7 +46,7 @@
   if (nil == calendar) {
     calendar = [NSCalendar currentCalendar];
   }
-  NSDateComponents *components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:self];
+  NSDateComponents *components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:self];
   
   [components setDay:day];
   
@@ -56,3 +54,4 @@
 }
 
 @end
+
