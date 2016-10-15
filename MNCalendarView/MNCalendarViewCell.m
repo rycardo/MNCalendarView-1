@@ -52,10 +52,10 @@ NSString *const MNCalendarViewCellIdentifier = @"MNCalendarViewCellIdentifier";
     UIView *backgroundView = [[UIView alloc] initWithFrame:self.bounds];
     backgroundView.layer.backgroundColor = UIColor.clearColor.CGColor;
     backgroundView.backgroundColor = UIColor.clearColor;
-
+ 
     CALayer *circle         = [CALayer layer];
-    circle.backgroundColor  = appMainActionColour.CGColor;//appAlternateActionColour.CGColor;
-    circle.borderColor      = appMainActionColour.CGColor;//appAlternateActionColour.CGColor;
+    circle.backgroundColor  = [UIView appearance].tintColor.CGColor;
+    circle.borderColor      = [UIView appearance].tintColor.CGColor;
     circle.borderWidth      = 2.0;
     circle.frame            = CGRectInset(self.bounds, 10, 10);
     circle.cornerRadius     = (circle.frame.size.width / 2);
