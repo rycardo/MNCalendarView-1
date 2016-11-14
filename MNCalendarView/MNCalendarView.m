@@ -266,6 +266,7 @@
     cell.backgroundColor = self.collectionView.backgroundColor;
     cell.titleLabel.text = self.weekdaySymbols[indexPath.item];
     cell.separatorColor = self.separatorColor;
+    cell.tintColor = self.tintColor;
     return cell;
   }
 
@@ -296,6 +297,7 @@
     [cell setSelected:[date isEqualToDate:self.selectedDate]];
   }
 
+  cell.tintColor = self.tintColor;
   return cell;
 }
 
