@@ -8,6 +8,10 @@
 
 #import "MNCalendarViewCell.h"
 
+#define CIRCLE_BACKGROUND_COLOUR 	[UIColor colorWithRed:(158/255.0) green:(176/255.0) blue:(179/255.0) alpha:1.0]
+#define CIRCLE_BORDER_COLOUR		[UIColor colorWithRed:(158/255.0) green:(176/255.0) blue:(179/255.0) alpha:1.0]
+#define CIRCLE_TEXT_COLOUR			UIColor.whiteColor
+
 void MNContextDrawLine(CGContextRef c, CGPoint start, CGPoint end, CGColorRef color, CGFloat lineWidth) {
   CGContextSetAllowsAntialiasing(c, false);
   CGContextSetStrokeColorWithColor(c, color);
@@ -37,7 +41,7 @@ NSString *const MNCalendarViewCellIdentifier = @"MNCalendarViewCellIdentifier";
     self.titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     self.titleLabel.font = [UIFont systemFontOfSize:14.f];
     self.titleLabel.textColor = [UIColor darkTextColor];
-    self.titleLabel.highlightedTextColor = [UIColor whiteColor];
+    self.titleLabel.highlightedTextColor = CIRCLE_TEXT_COLOUR;
     self.titleLabel.textAlignment = NSTextAlignmentCenter;
     self.titleLabel.userInteractionEnabled = NO;
     self.titleLabel.backgroundColor = [UIColor clearColor];
@@ -52,11 +56,11 @@ NSString *const MNCalendarViewCellIdentifier = @"MNCalendarViewCellIdentifier";
     UIView *backgroundView = [[UIView alloc] initWithFrame:self.bounds];
     backgroundView.layer.backgroundColor = UIColor.clearColor.CGColor;
     backgroundView.backgroundColor = UIColor.clearColor;
- 
+
     CALayer *circle         = [CALayer layer];
-    circle.backgroundColor  = self.tintColor.CGColor;
-    circle.borderColor      = self.tintColor.CGColor;
-    circle.borderWidth      = 2.0;
+    circle.backgroundColor  = CIRCLE_BACKGROUND_COLOUR.CGColor;
+    circle.borderColor      = CIRCLE_BORDER_COLOUR.CGColor;
+    circle.borderWidth      = (1.0 * UIScreen.mainScreen.scale);
     circle.frame            = CGRectInset(self.bounds, 10, 10);
     circle.cornerRadius     = (circle.frame.size.width / 2);
     circle.masksToBounds    = YES;
