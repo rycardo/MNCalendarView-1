@@ -9,7 +9,7 @@
 #import "MNCalendarViewCell.h"
 
 #define CIRCLE_BACKGROUND_COLOUR 	[UIColor colorWithRed:(209/255.0) green:(209/255.0) blue:(209/255.0) alpha:1.0]
-#define CIRCLE_BORDER_COLOUR		[UIColor colorWithRed:(121/255.0) green:(141/255.0) blue:(148/255.0) alpha:1.0]
+#define CIRCLE_BORDER_COLOUR		[UIColor colorWithRed:(62/255.0) green:(79/255.0) blue:(85/255.0) alpha:1.0]
 #define CIRCLE_TEXT_COLOUR			UIColor.blackColor
 
 void MNContextDrawLine(CGContextRef c, CGPoint start, CGPoint end, CGColorRef color, CGFloat lineWidth) {
